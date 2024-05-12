@@ -1,34 +1,32 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
+    id 'me.tagavari.nmsremap' version '1.0.0'
 }
 
-group = "mc.ajneb97"
+group = 'mc.ajneb97'
 version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
     maven {
-        url = uri("https://repo.papermc.io/repository/maven-public/")
-    }
-    maven {
         name = "spigotmc-repo"
         url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
     }
     maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
     maven {
-        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+        url "https://repo.codemc.io/repository/maven-public/"
     }
     mavenLocal()
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot:1.20.2-R0.1-SNAPSHOT"
+    compileOnly "org.spigotmc:spigot:1.20.2-R0.1-SNAPSHOT:remapped-mojang"
     compileOnly 'me.clip:placeholderapi:2.11.2'
+    compileOnly 'me.filoghost.holographicdisplays:holographicdisplays-api:3.0.0'
 }
-
 def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
@@ -51,5 +49,19 @@ processResources {
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
+    }
+}
+
+shadowJar {
+    setArchiveBaseName("MineChess")
+}
+
+tasks {
+    remap {
+        version("1.20.2-R0.1-SNAPSHOT")
+        inputFile.set(new File(buildDir, "/libs/TheDeQTesting-1.20.2-R0.1-SNAPSHOT-all.jar"));
+        archiveClassifier.set("remapped")
+        archiveName.set("TheDeQTesting-remapped.jar")
+        outputFile.set(new File(buildDir, "/libs/TheDeQTesting-remapped.jar"))
     }
 }
