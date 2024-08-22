@@ -24,7 +24,7 @@ public class Tablero {
 					 || Bukkit.getVersion().contains("1.19") || Bukkit.getVersion().contains("1.20")) {
 				m = Material.valueOf("WHITE_WOOL");
 			}else {
-				m = Material.WOOL;
+				m = Material.WHITE_WOOL;
 			}
 			
 			l.getBlock().setType(m);
